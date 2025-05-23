@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const { loadConfig, saveConfig } = require('../lib/storage');
+const { parseEnvFile } = require('../lib/parser');
 
 const args = process.argv.slice(2);
 const command = args[0];
@@ -26,7 +27,24 @@ switch(command) {
     }
     break;
   case 'add':
-    console.log("add not implemented yet");
+    const envName = args[1];
+    const filePath = args[2];
+
+    if (!envName || !filePath) {
+      console.log("Usage: envmgr add <name> <file>");
+      process.exit(1);
+    }
+
+    try {
+      const vars = parseEnvFile(filePath);
+      const cfg = loadConfig();
+      cfg.environments[envName] = vars;
+      saveConfig(cfg);
+      console.log(`saved environment '${envName}' with ${Object.keys(vars).length} variables`);
+    } catch(err) {
+      console.error("error:", err.message);
+      process.exit(1);
+    }
     break;
   case 'load':
     console.log("load not implemented yet");
