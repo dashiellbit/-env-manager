@@ -47,7 +47,23 @@ switch(command) {
     }
     break;
   case 'load':
-    console.log("load not implemented yet");
+    const loadEnvName = args[1];
+
+    if (!loadEnvName) {
+      console.log("Usage: envmgr load <name>");
+      process.exit(1);
+    }
+
+    const loadCfg = loadConfig();
+    if (!loadCfg.environments[loadEnvName]) {
+      console.error(`environment '${loadEnvName}' not found`);
+      process.exit(1);
+    }
+
+    const envVars = loadCfg.environments[loadEnvName];
+    Object.entries(envVars).forEach(([key, value]) => {
+      console.log(`export ${key}="${value}"`);
+    });
     break;
   default:
     console.log("unknown command:", command);
