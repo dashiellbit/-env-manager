@@ -12,6 +12,7 @@ if (!command) {
   console.log("  list     - list all saved environments");
   console.log("  add      - add new environment");
   console.log("  load     - load environment variables");
+  console.log("  delete   - delete saved environment");
   process.exit(0);
 }
 
@@ -64,6 +65,24 @@ switch(command) {
     Object.entries(envVars).forEach(([key, value]) => {
       console.log(`export ${key}="${value}"`);
     });
+    break;
+  case 'delete':
+    const delEnvName = args[1];
+
+    if (!delEnvName) {
+      console.log("Usage: envmgr delete <name>");
+      process.exit(1);
+    }
+
+    const delCfg = loadConfig();
+    if (!delCfg.environments[delEnvName]) {
+      console.error(`environment '${delEnvName}' not found`);
+      process.exit(1);
+    }
+
+    delete delCfg.environments[delEnvName];
+    saveConfig(delCfg);
+    console.log(`deleted environment '${delEnvName}'`);
     break;
   default:
     console.log("unknown command:", command);
