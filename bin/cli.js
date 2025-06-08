@@ -12,6 +12,7 @@ if (!command) {
   console.log("  list     - list all saved environments");
   console.log("  add      - add new environment");
   console.log("  load     - load environment variables");
+  console.log("  show     - show variables in environment");
   console.log("  delete   - delete saved environment");
   process.exit(0);
 }
@@ -64,6 +65,26 @@ switch(command) {
     const envVars = loadCfg.environments[loadEnvName];
     Object.entries(envVars).forEach(([key, value]) => {
       console.log(`export ${key}="${value}"`);
+    });
+    break;
+  case 'show':
+    const showEnvName = args[1];
+
+    if (!showEnvName) {
+      console.log("Usage: envmgr show <name>");
+      process.exit(1);
+    }
+
+    const showCfg = loadConfig();
+    if (!showCfg.environments[showEnvName]) {
+      console.error(`environment '${showEnvName}' not found`);
+      process.exit(1);
+    }
+
+    console.log(`Environment: ${showEnvName}`);
+    const showVars = showCfg.environments[showEnvName];
+    Object.entries(showVars).forEach(([key, value]) => {
+      console.log(`  ${key}=${value}`);
     });
     break;
   case 'delete':
