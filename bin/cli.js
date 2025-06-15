@@ -40,6 +40,11 @@ switch(command) {
     try {
       const vars = parseEnvFile(filePath);
       const cfg = loadConfig();
+
+      if (cfg.environments[envName]) {
+        console.log(`warning: environment '${envName}' already exists, overwriting...`);
+      }
+
       cfg.environments[envName] = vars;
       saveConfig(cfg);
       console.log(`saved environment '${envName}' with ${Object.keys(vars).length} variables`);
