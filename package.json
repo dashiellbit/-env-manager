@@ -1,6 +1,6 @@
 {
   "name": "env-manager",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "manage environment variables across projects",
   "main": "index.js",
   "bin": {
@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node bin/cli.js"
   },
-  "keywords": ["env", "environment", "config"],
+  "keywords": ["env", "environment", "config", "dotenv"],
   "author": "",
   "license": "MIT"
 }
